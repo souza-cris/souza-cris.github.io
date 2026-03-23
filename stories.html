@@ -26,39 +26,125 @@
             <p>White papers, essays, and perspectives shared on LinkedIn and Twitter.</p>
         </header>
 
-        <div class="content-grid">
+        <div id="storiesContainer" class="content-grid">
             <div class="card">
-                <h3>Story Title</h3>
-                <p class="story-date">March 2026</p>
-                <p>[Brief excerpt or description of the white paper/essay]</p>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <a href="#">Read on LinkedIn →</a>
-                    <a href="#">Read on Twitter →</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Story Title</h3>
-                <p class="story-date">February 2026</p>
-                <p>[Brief excerpt or description of the white paper/essay]</p>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <a href="#">Read on LinkedIn →</a>
-                    <a href="#">Read on Twitter →</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Story Title</h3>
-                <p class="story-date">January 2026</p>
-                <p>[Brief excerpt or description of the white paper/essay]</p>
-                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                    <a href="#">Read on LinkedIn →</a>
-                    <a href="#">Read on Twitter →</a>
-                </div>
+                <p style="color: var(--gray-medium);">Loading stories...</p>
             </div>
         </div>
     </main>
 
     <script src="js/main.js"></script>
+    <script>
+        async function loadStories() {
+            try {
+                // Fetch stories directory from GitHub
+                const response = await fetch(
+                    'https://api.github.com/repos/souza-cris/souza-cris.github.io/contents/stories'
+                );
+
+                if (!response.ok) {
+                    // No stories yet
+                    document.getElementById('storiesContainer').innerHTML = `
+                        <div class="card">
+                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const files = await response.json();
+                const storyFiles = files.filter(f => f.name.endsWith('.md'));
+
+                if (storyFiles.length === 0) {
+                    document.getElementById('storiesContainer').innerHTML = `
+                        <div class="card">
+                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Fetch and parse each story
+                const stories = await Promise.all(
+                    storyFiles.map(async file => {
+                        const contentResponse = await fetch(file.download_url);
+                        const markdown = await contentResponse.text();
+                        
+                        // Parse frontmatter
+                        const frontmatterMatch = markdown.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+                        let title = 'Untitled';
+                        let date = new Date();
+                        let status = 'published';
+                        let excerpt = '';
+
+                        if (frontmatterMatch) {
+                            const frontmatter = frontmatterMatch[1];
+                            const content = frontmatterMatch[2];
+
+                            const titleMatch = frontmatter.match(/title:\s*(.+)/);
+                            const dateMatch = frontmatter.match(/date:\s*(.+)/);
+                            const statusMatch = frontmatter.match(/status:\s*(.+)/);
+
+                            if (titleMatch) title = titleMatch[1];
+                            if (dateMatch) date = new Date(dateMatch[1]);
+                            if (statusMatch) status = statusMatch[1];
+
+                            // Get first paragraph as excerpt
+                            const firstPara = content.trim().split('\n\n')[0];
+                            excerpt = firstPara.substring(0, 150) + (firstPara.length > 150 ? '...' : '');
+                        }
+
+                        return {
+                            slug: file.name.replace('.md', ''),
+                            title,
+                            date,
+                            status,
+                            excerpt
+                        };
+                    })
+                );
+
+                // Filter only published and sort by date
+                const published = stories
+                    .filter(s => s.status === 'published')
+                    .sort((a, b) => b.date - a.date);
+
+                if (published.length === 0) {
+                    document.getElementById('storiesContainer').innerHTML = `
+                        <div class="card">
+                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render stories
+                document.getElementById('storiesContainer').innerHTML = published.map(story => `
+                    <div class="card">
+                        <h3><a href="story.html?slug=${story.slug}">${story.title}</a></h3>
+                        <p class="story-date">${story.date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })}</p>
+                        <p>${story.excerpt}</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="story.html?slug=${story.slug}">Read more →</a>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading stories:', error);
+                document.getElementById('storiesContainer').innerHTML = `
+                    <div class="card">
+                        <p style="color: var(--gray-medium);">Error loading stories. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        loadStories();
+    </script>
 </body>
 </html>
