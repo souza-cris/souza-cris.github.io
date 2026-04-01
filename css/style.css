@@ -353,6 +353,127 @@ nav {
   font-size: 1.5rem;
 }
 
+/* Stories */
+.status-message {
+  margin-bottom: 0;
+}
+
+.story-readmore {
+  margin-top: 1rem;
+}
+
+.story-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--gray-medium);
+}
+
+.story-header {
+  margin-bottom: 2rem;
+}
+
+.story-content {
+  line-height: 1.8;
+  font-size: 1.125rem;
+  margin-top: 2rem;
+}
+
+.story-content h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.story-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.story-content p {
+  margin-bottom: 1.5rem;
+}
+
+.story-content a {
+  color: var(--teal);
+  text-decoration: underline;
+}
+
+.story-content code {
+  background: var(--gray-light);
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.story-content pre {
+  background: var(--gray-light);
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.story-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.share-section {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(139, 157, 131, 0.25);
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+  color: var(--white);
+}
+
+.share-btn-linkedin {
+  background: #0077b5;
+}
+
+.share-btn-linkedin:hover {
+  background: #006399;
+  color: var(--white);
+}
+
+.share-btn-twitter {
+  background: #1da1f2;
+}
+
+.share-btn-twitter:hover {
+  background: #1a8cd8;
+  color: var(--white);
+}
+
+.story-back-link {
+  margin-top: 3rem;
+}
+
+.story-back-link a {
+  font-weight: 600;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -403,5 +524,9 @@ nav {
 
   .feature-strip {
     grid-template-columns: 1fr;
+  }
+
+  .story-container {
+    padding: 9.5rem 1rem 2rem;
   }
 }

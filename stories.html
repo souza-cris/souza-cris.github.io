@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Short Stories - Cristiane Souza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,15 +23,16 @@
     </nav>
 
     <main class="page-container">
-        <header class="page-header">
+        <header class="page-header page-hero-panel">
+            <p class="eyebrow">Writing</p>
             <h1>Short Stories</h1>
             <div class="accent-line"></div>
             <p>White papers, essays, and perspectives shared on LinkedIn and Twitter.</p>
         </header>
 
-        <div id="storiesContainer" class="content-grid">
-            <div class="card">
-                <p style="color: var(--gray-medium);">Loading stories...</p>
+        <div id="storiesContainer" class="content-grid soft-grid">
+            <div class="card soft-card">
+                <p class="status-message">Loading stories...</p>
             </div>
         </div>
     </main>
@@ -45,8 +49,8 @@
                 if (!response.ok) {
                     // No stories yet
                     document.getElementById('storiesContainer').innerHTML = `
-                        <div class="card">
-                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        <div class="card soft-card">
+                            <p class="status-message">No stories published yet. Check back soon!</p>
                         </div>
                     `;
                     return;
@@ -57,8 +61,8 @@
 
                 if (storyFiles.length === 0) {
                     document.getElementById('storiesContainer').innerHTML = `
-                        <div class="card">
-                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        <div class="card soft-card">
+                            <p class="status-message">No stories published yet. Check back soon!</p>
                         </div>
                     `;
                     return;
@@ -111,8 +115,8 @@
 
                 if (published.length === 0) {
                     document.getElementById('storiesContainer').innerHTML = `
-                        <div class="card">
-                            <p style="color: var(--gray-medium);">No stories published yet. Check back soon!</p>
+                        <div class="card soft-card">
+                            <p class="status-message">No stories published yet. Check back soon!</p>
                         </div>
                     `;
                     return;
@@ -120,7 +124,7 @@
 
                 // Render stories
                 document.getElementById('storiesContainer').innerHTML = published.map(story => `
-                    <div class="card">
+                    <div class="card soft-card">
                         <h3><a href="story.html?slug=${story.slug}">${story.title}</a></h3>
                         <p class="story-date">${story.date.toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -128,7 +132,7 @@
                             day: 'numeric'
                         })}</p>
                         <p>${story.excerpt}</p>
-                        <div style="margin-top: 1rem;">
+                        <div class="story-readmore">
                             <a href="story.html?slug=${story.slug}">Read more →</a>
                         </div>
                     </div>
@@ -137,8 +141,8 @@
             } catch (error) {
                 console.error('Error loading stories:', error);
                 document.getElementById('storiesContainer').innerHTML = `
-                    <div class="card">
-                        <p style="color: var(--gray-medium);">Error loading stories. Please try again later.</p>
+                    <div class="card soft-card">
+                        <p class="status-message">Error loading stories. Please try again later.</p>
                     </div>
                 `;
             }
