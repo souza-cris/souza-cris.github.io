@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission: Starman — Student Handout</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-base: #0a1628;
+    --bg-accent: #13284a;
+    --text-main: #dbe6f5;
+    --text-soft: #9fb2ca;
+    --line-blue: rgba(79, 152, 255, 0.24);
+    --brand-blue: #4f98ff;
+    --brand-cyan: #20c7bf;
+    --brand-amber: #f8aa2f;
+    --card-dark: #11233f;
+  }
+  body {
+    font-family: 'Source Sans 3', 'Helvetica Neue', Helvetica, sans-serif;
+    background:
+      radial-gradient(circle at 8% 2%, rgba(79, 152, 255, 0.22) 0%, rgba(79, 152, 255, 0) 32%),
+      radial-gradient(circle at 92% 18%, rgba(32, 199, 191, 0.18) 0%, rgba(32, 199, 191, 0) 30%),
+      linear-gradient(165deg, var(--bg-base) 0%, var(--bg-accent) 45%, #0e1f39 100%);
+    color: var(--text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    animation: rise-in 0.9s ease-out both;
+  }
+
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Header */
+  .header { text-align: center; padding: 48px 0 36px; border-bottom: 1px solid var(--line-blue); margin-bottom: 36px; }
+  .header .tag { display: inline-block; background: rgba(79,152,255,0.18); color: #9bc5ff; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 16px; }
+  .header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 46px; font-weight: 700; color: #ffffff; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .header h1 span { color: var(--brand-blue); }
+  .header .subtitle { font-size: 15px; color: var(--text-soft); }
+  .header .meta { margin-top: 16px; font-size: 12px; color: #6f8ab1; letter-spacing: 1px; }
+  .astronaut-badge {
+    display: inline-block;
+    margin: 10px 0 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(79, 152, 255, 0.35);
+    background: rgba(79, 152, 255, 0.14);
+    color: #dcecff;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+  .intro-note {
+    margin: 0 0 24px;
+    padding: 10px 14px;
+    border-left: 3px solid var(--brand-amber);
+    background: rgba(248, 170, 47, 0.12);
+    color: #f7d59d;
+    font-size: 13px;
+  }
+
+  /* Scenario box */
+  .scenario { background: linear-gradient(135deg, rgba(26, 56, 98, 0.86), rgba(18, 40, 74, 0.95)); border: 1px solid rgba(79,152,255,0.34); border-radius: 12px; padding: 28px 32px; margin-bottom: 36px; box-shadow: 0 14px 34px rgba(7, 18, 33, 0.28); }
+  .scenario h2 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--brand-blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .scenario p { font-size: 16px; color: #edf3ff; }
+  .scenario .highlight { color: #9bc5ff; font-weight: 700; }
+
+  /* Activity structure */
+  .structure { display: flex; gap: 16px; margin-bottom: 36px; }
+  .phase { flex: 1; background: var(--card-dark); border: 1px solid rgba(79,152,255,0.18); border-radius: 10px; padding: 20px; text-align: center; position: relative; animation: reveal 0.55s ease-out both; }
+  .phase:nth-child(2) { animation-delay: 0.08s; }
+  .phase:nth-child(3) { animation-delay: 0.16s; }
+  .phase .num { font-size: 32px; font-weight: 700; color: rgba(79,152,255,0.22); position: absolute; top: 8px; right: 14px; }
+  .phase h3 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+  .phase .time { font-size: 12px; color: #93d8ff; font-weight: 600; }
+  .phase .desc { font-size: 12px; color: var(--text-soft); margin-top: 8px; }
+
+  /* Section title */
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--brand-blue); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--line-blue); }
+
+  /* Module grid */
+  .modules { display: flex; gap: 16px; margin-bottom: 36px; }
+  .module { flex: 1; background: var(--card-dark); border-radius: 10px; padding: 20px 18px; border-top: 3px solid; }
+  .module.m1 { border-color: #3B82F6; }
+  .module.m2 { border-color: #F59E0B; }
+  .module.m3 { border-color: #14B8A6; }
+  .module h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: #FFFFFF; margin-bottom: 10px; }
+  .module ul { list-style: none; padding: 0; }
+  .module ul li { font-size: 12.5px; color: var(--text-soft); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .module ul li:last-child { border: none; }
+  .module ul li strong { color: #d7e5f9; }
+
+  /* Reference cards */
+  .ref-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 36px; }
+  .ref-card { background: rgba(28, 50, 85, 0.78); border-radius: 8px; padding: 16px 18px; border-left: 3px solid; }
+  .ref-card.blue { border-color: #3B82F6; }
+  .ref-card.green { border-color: #10B981; }
+  .ref-card.purple { border-color: #8B5CF6; }
+  .ref-card.orange { border-color: #F59E0B; }
+  .ref-card.teal { border-color: #14B8A6; }
+  .ref-card.pink { border-color: #EC4899; }
+  .ref-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+  .ref-card p { font-size: 11.5px; color: var(--text-soft); }
+  .ref-card .stat { font-size: 11px; color: #9bc5ff; font-weight: 600; margin-top: 6px; }
+
+  /* Before/After */
+  .comparison { display: flex; gap: 16px; margin-bottom: 36px; }
+  .comp-col { flex: 1; border-radius: 10px; padding: 20px; }
+  .comp-col.before { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+  .comp-col.after { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
+  .comp-col h3 { font-family: 'Space Grotesk', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+  .comp-col.before h3 { color: #94A3B8; }
+  .comp-col.after h3 { color: #10B981; }
+  .comp-col ol { padding-left: 20px; }
+  .comp-col ol li { font-size: 12.5px; padding: 3px 0; }
+  .comp-col.before ol li { color: #94A3B8; }
+  .comp-col.after ol li { color: #CBD5E1; }
+  .comp-col .total { margin-top: 12px; font-size: 14px; font-weight: 700; }
+  .comp-col.before .total { color: #EF4444; }
+  .comp-col.after .total { color: #10B981; }
+
+  /* Open + Retro section */
+  .open-section { background: linear-gradient(135deg, #162742, #1C3255); border: 1px dashed rgba(245,158,11,0.3); border-radius: 10px; padding: 24px; margin-bottom: 36px; }
+  .open-section h3 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: #F59E0B; margin-bottom: 10px; }
+  .open-section p { font-size: 13px; color: #d7e5f9; margin-bottom: 8px; }
+
+  .retro-grid { display: flex; gap: 12px; margin-bottom: 36px; }
+  .retro-col { flex: 1; border-radius: 10px; padding: 18px; text-align: center; }
+  .retro-col.start { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); }
+  .retro-col.stop { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+  .retro-col.continue { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25); }
+  .retro-col h4 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .retro-col.start h4 { color: #10B981; }
+  .retro-col.stop h4 { color: #EF4444; }
+  .retro-col.continue h4 { color: #3B82F6; }
+  .retro-col p { font-size: 11.5px; color: var(--text-soft); }
+
+  /* Questions */
+  .q-module-header { margin-top: 36px; margin-bottom: 20px; }
+  .q-module-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px; }
+  .q-module-header .objective { font-size: 12.5px; color: var(--text-soft); font-style: italic; }
+  .question { background: var(--card-dark); border: 1px solid rgba(79,152,255,0.16); border-radius: 10px; padding: 20px 22px; margin-bottom: 14px; }
+  .question .q-num { font-size: 12px; font-weight: 700; color: #3B82F6; letter-spacing: 1px; margin-bottom: 8px; }
+  .question .q-num.m2 { color: #8B5CF6; }
+  .question .q-num.m3 { color: #14B8A6; }
+  .question .q-num.open { color: #F59E0B; }
+  .question .q-num.retro { color: #10B981; }
+  .question .q-text { font-size: 14px; color: #ebf3ff; margin-bottom: 14px; }
+  .question .options { list-style: none; padding: 0; }
+  .question .options li { font-size: 13px; color: #d7e5f9; padding: 8px 12px; margin-bottom: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; }
+  .question .options li .letter { font-weight: 700; color: #60A5FA; margin-right: 8px; }
+  .question .essay-space { border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 16px; min-height: 60px; font-size: 12px; color: #475569; font-style: italic; }
+
+  /* AI policy */
+  .ai-policy { background: rgba(79,152,255,0.09); border: 1px solid rgba(79,152,255,0.24); border-radius: 10px; padding: 20px 24px; margin-bottom: 36px; }
+  .ai-policy h3 { font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: #9bc5ff; margin-bottom: 8px; }
+  .ai-policy p { font-size: 12.5px; color: #d7e5f9; }
+  .ai-policy .emphasis { color: #F59E0B; font-weight: 600; }
+
+  /* Footer */
+  .footer { text-align: center; padding-top: 24px; border-top: 1px solid var(--line-blue); }
+  .footer p { font-size: 11px; color: #475569; }
+
+  @media (max-width: 860px) {
+    .page { padding: 28px 18px; }
+    .header { padding-top: 28px; }
+    .header h1 { font-size: 36px; }
+    .structure,
+    .modules,
+    .comparison,
+    .retro-grid { flex-direction: column; }
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 520px) {
+    .header .meta { letter-spacing: 0.2px; line-height: 1.5; }
+    .scenario,
+    .question,
+    .open-section,
+    .ai-policy { padding: 16px; }
+    .question .options li { padding: 9px 10px; }
+  }
+
+  @media print {
+    @page { size: letter portrait; margin: 0.55in; }
+    body { background: white; color: #1E293B; }
+    .page { padding: 20px; }
+    .header h1 { color: #1E293B; }
+    .header h1 span { color: #2563EB; }
+    .scenario, .module, .phase, .ref-card, .ai-policy, .open-section { border: 1px solid #E2E8F0; }
+    .comp-col.before, .comp-col.after { border: 1px solid #E2E8F0; }
+    .module-page { break-before: page; page-break-before: always; }
+    .module-page.first { break-before: auto; page-break-before: auto; }
+    .question { break-inside: avoid; page-break-inside: avoid; margin-bottom: 10px; }
+    .q-module-header { margin-top: 0; margin-bottom: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="tag">MIS 511 · In-Class Activity</div>
+    <h1>Mission: <span>Starman</span> &#11088;</h1>
+    <div class="subtitle">Project Management &middot; SDLC &middot; Agile &middot; AI</div>
+    <div class="meta">2 POINTS &middot; TEAM WORK</div>
+    <div class="astronaut-badge">&#128104;&#8205;&#128640; Astronaut On Board</div>
+  </div>
+
+  <div class="intro-note">Reflect on the lectures about Project Management, SDLC, Agile, and AI (April 8 &amp; 13).</div>
+
+  <!-- Scenario -->
+  <div class="scenario" style="position: relative; overflow: hidden;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" alt="Earth from space — NASA Blue Marble" style="position: absolute; top: -20px; right: -30px; width: 180px; height: 180px; border-radius: 50%; opacity: 0.35; pointer-events: none;" />
+    <h2>&#128640; Mission Briefing</h2>
+    <p>The <span class="highlight">Artemis crew has returned to Earth</span> after humanity's latest mission to the Moon. Building on the momentum of Artemis, NASA is launching a brand-new technology initiative: <span class="highlight">Project Starman</span> — a digital product (web &amp; mobile application) for <span class="highlight">next-generation mission planning and spacecraft operations</span>.</p>
+    <p style="margin-top: 12px;">Your team is a <span class="highlight">cross-functional team</span> assigned to build Starman. The team is composed of:</p>
+    <p style="margin-top: 8px; font-size: 14px; color: #CBD5E1;">
+      &#128188; <strong>Product Manager</strong> &nbsp;&middot;&nbsp;
+      &#128187; <strong>Software Engineers</strong> &nbsp;&middot;&nbsp;
+      &#128270; <strong>QA / Testers</strong> &nbsp;&middot;&nbsp;
+      &#128200; <strong>Business Analyst</strong> &nbsp;&middot;&nbsp;
+      &#127912; <strong>UX Designer</strong> &nbsp;&middot;&nbsp;
+      &#128736;&#65039; <strong>DevOps Engineer</strong> &nbsp;&middot;&nbsp;
+      &#128640; <strong>Astronaut (Subject-Matter Expert)</strong>
+    </p>
+    <p style="margin-top: 12px;">Using what you learned in the April 8 session and the lectures about AI integration, answer questions about how AI transforms each phase of building and managing this product.</p>
+  </div>
+
+  <!-- Activity Structure -->
+  <div class="section-title">Activity Structure</div>
+  <div class="structure">
+    <div class="phase">
+      <div class="num">01</div>
+      <h3>Mission Execution</h3>
+      <div class="time">30 min</div>
+      <div class="desc">Complete 3 research-based modules as a team</div>
+    </div>
+    <div class="phase">
+      <div class="num">02</div>
+      <h3>Open Reflection</h3>
+      <div class="time">5 min</div>
+      <div class="desc">Share how you're preparing for the Age of AI</div>
+    </div>
+    <div class="phase">
+      <div class="num">03</div>
+      <h3>Team Retrospective</h3>
+      <div class="time">10 min</div>
+      <div class="desc">Experience a real Agile ceremony: START / STOP / CONTINUE</div>
+    </div>
+  </div>
+
+  <!-- Three Modules -->
+  <div class="section-title">Module Overview</div>
+  <div class="modules">
+    <div class="module m1">
+      <h3>&#9881;&#65039; Module 1: SDLC</h3>
+      <ul>
+        <li><strong>Planning:</strong> AI auto-generates user stories &amp; effort estimates</li>
+        <li><strong>Coding:</strong> GitHub Copilot as AI pair programmer in VS Code</li>
+        <li><strong>Testing:</strong> AI auto-generates test cases, detects bugs early</li>
+        <li><strong>Deployment:</strong> AI monitors releases, auto-rollback on anomalies</li>
+      </ul>
+    </div>
+    <div class="module m2">
+      <h3>&#128101; Module 2: Agile Roles</h3>
+      <ul>
+        <li><strong>Product Manager:</strong> AI handles refinement → PM focuses on strategy</li>
+        <li><strong>QA/Tester:</strong> From writing scripts to designing test strategies</li>
+      </ul>
+    </div>
+    <div class="module m3">
+      <h3>&#128197; Module 3: Agile Ceremonies</h3>
+      <ul>
+        <li><strong>Sprint Planning:</strong> AI suggests estimates from past stories</li>
+        <li><strong>Daily Standup:</strong> AI summarizes commits &amp; blockers</li>
+        <li><strong>Backlog Refinement:</strong> AI drafts stories from PRDs</li>
+        <li><strong>Retrospective:</strong> AI detects recurring themes across retros</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Key Reference: Real-World Examples -->
+  <div class="section-title">Key Reference — Real-World Examples</div>
+  <div class="ref-grid">
+    <div class="ref-card green">
+      <h4>Google</h4>
+      <p>Engineers use Gemini-powered tools to draft code, write tests, and review PRs.</p>
+      <div class="stat">25%+ of new code is AI-generated (2024)</div>
+    </div>
+    <div class="ref-card blue">
+      <h4>Microsoft / GitHub</h4>
+      <p>Copilot is an AI pair programmer integrated into VS Code, suggesting code line-by-line and in blocks.</p>
+      <div class="stat">46% of code in files where Copilot is enabled</div>
+    </div>
+    <div class="ref-card orange">
+      <h4>Amazon (AWS)</h4>
+      <p>Published the AI-DLC framework. CodeWhisperer handles code + security scanning simultaneously.</p>
+      <div class="stat">AI-Driven Development Lifecycle</div>
+    </div>
+    <div class="ref-card teal">
+      <h4>Spotify</h4>
+      <p>Squads use AI to analyze velocity trends, predict bottlenecks, and auto-generate retro insights.</p>
+      <div class="stat">AI-assisted Agile across 200+ teams</div>
+    </div>
+    <div class="ref-card purple">
+      <h4>Deloitte</h4>
+      <p>Research on how AI is rewriting product and engineering roles across organizations.</p>
+      <div class="stat">AI frees PM time for strategic work</div>
+    </div>
+    <div class="ref-card pink">
+      <h4>McKinsey (2024)</h4>
+      <p>AI is potentially accelerating each SDLC phase, compressing overall development timelines.</p>
+      <div class="stat">Up to 3x faster cycle time</div>
+    </div>
+  </div>
+
+  <!-- Before & After -->
+  <div class="section-title">Key Reference — SDLC Compression</div>
+  <div class="comparison">
+    <div class="comp-col before">
+      <h3>Traditional SDLC</h3>
+      <ol>
+        <li>PM writes PRD manually (2–3 weeks)</li>
+        <li>Architects design system (1–2 weeks)</li>
+        <li>Devs code feature (2–4 weeks)</li>
+        <li>QA writes &amp; runs tests (1–2 weeks)</li>
+        <li>Ops deploys to production (1 week)</li>
+      </ol>
+      <div class="total">Total: 7–12 weeks</div>
+    </div>
+    <div class="comp-col after">
+      <h3>AI-Augmented SDLC</h3>
+      <ol>
+        <li>AI drafts PRD from notes (2–3 days)</li>
+        <li>AI generates architecture options (1–3 days)</li>
+        <li>AI + dev pair-program feature (1–2 weeks)</li>
+        <li>AI auto-generates tests (2–3 days)</li>
+        <li>AI-assisted CI/CD deployment (hours)</li>
+      </ol>
+      <div class="total">Total: 2–4 weeks</div>
+    </div>
+  </div>
+
+  <!-- ========== QUIZ QUESTIONS ========== -->
+  <div class="section-title">Quiz Questions</div>
+
+  <!-- MODULE 1 — SDLC -->
+  <div class="module-page first">
+  <div class="q-module-header">
+    <h3>&#9881;&#65039; Module 1 — SDLC (Q1–Q4)</h3>
+    <div class="objective">Objective: Identify how AI integrates into each phase of the Software Development Life Cycle.</div>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Q1 · MODULE 1 — SDLC</div>
+    <div class="q-text">The Starman team is in the Planning phase of the NASA mission app. The Product Manager needs to write user stories and estimate effort for 40+ features. Which AI application would be MOST valuable in this SDLC phase?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> Use AI to deploy the application directly to production</li>
+      <li><span class="letter">B)</span> Use AI to write the final test scripts before any code is written</li>
+      <li><span class="letter">C)</span> Auto-generate user stories and estimate effort using AI models trained on historical project data</li>
+      <li><span class="letter">D)</span> Have AI replace the Product Manager and run planning autonomously</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Q2 · MODULE 1 — SDLC</div>
+    <div class="q-text">During the Coding phase, Starman engineers use GitHub Copilot to build the spacecraft tracking module. According to the lecture, how do the engineers use GitHub Copilot?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> They upload entire projects and let Copilot rewrite them from scratch</li>
+      <li><span class="letter">B)</span> Copilot acts as an AI pair programmer integrated into VS Code, suggesting code line-by-line and in blocks</li>
+      <li><span class="letter">C)</span> Engineers use it only to write documentation and comments, not actual code</li>
+      <li><span class="letter">D)</span> Copilot replaces the need for code reviews by automatically approving all changes</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Q3 · MODULE 1 — SDLC</div>
+    <div class="q-text">The Starman QA team needs to test the mission control dashboard before deployment. How does AI MOST significantly change the Testing phase of the SDLC?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> AI auto-generates test cases and detects bugs before deployment, covering more edge cases</li>
+      <li><span class="letter">B)</span> AI eliminates the need for a QA team entirely</li>
+      <li><span class="letter">C)</span> AI only tests the user interface but cannot test backend logic</li>
+      <li><span class="letter">D)</span> AI delays testing until after deployment to collect real user data</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <div class="q-num">Q4 · MODULE 1 — SDLC</div>
+    <div class="q-text">After coding and testing the mission control dashboard, the Starman team needs to deploy it to production. According to the lecture, how does AI change the Deployment phase of the SDLC?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> AI skips deployment and ships code directly to users without any review</li>
+      <li><span class="letter">B)</span> AI requires manual approval for every single line of code before deployment</li>
+      <li><span class="letter">C)</span> AI has no role in deployment — it only helps with coding and testing</li>
+      <li><span class="letter">D)</span> AI monitors releases and can auto-rollback when it detects anomalies</li>
+    </ul>
+  </div>
+  </div>
+
+  <!-- MODULE 2 — AGILE ROLES -->
+  <div class="module-page">
+  <div class="q-module-header">
+    <h3>&#128101; Module 2 — Agile Roles (Q5–Q6)</h3>
+    <div class="objective">Objective: Explain how AI is reshaping key Agile roles by shifting focus from repetitive tasks to strategic and creative work.</div>
+  </div>
+
+  <div class="question">
+    <div class="q-num m2">Q5 · MODULE 2 — AGILE ROLES</div>
+    <div class="q-text">On the Starman project, the Product Manager currently spends most of their time on manual backlog refinement and writing user stories. According to the lecture, what is the main benefit of AI for the Product Manager role?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> AI replaces the Product Manager role entirely — teams no longer need one</li>
+      <li><span class="letter">B)</span> AI handles backlog refinement and prioritization, freeing the PM to focus on strategy and stakeholder alignment</li>
+      <li><span class="letter">C)</span> AI has no impact on Product Managers since their work is non-technical</li>
+      <li><span class="letter">D)</span> AI only helps PMs create slide presentations for stakeholders</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <div class="q-num m2">Q6 · MODULE 2 — AGILE ROLES</div>
+    <div class="q-text">The Starman QA team is responsible for validating the spacecraft telemetry system before every release. According to the lecture, how is the QA / Tester role evolving with AI?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> QA Testers are no longer needed because AI catches every bug automatically</li>
+      <li><span class="letter">B)</span> Testers now focus exclusively on writing AI prompts instead of understanding the product</li>
+      <li><span class="letter">C)</span> Testers shift from writing repetitive test scripts to designing test strategies, while AI auto-generates and maintains test suites</li>
+      <li><span class="letter">D)</span> The QA role is unchanged because AI cannot reliably test complex software systems</li>
+    </ul>
+  </div>
+  </div>
+
+  <!-- MODULE 3 — AGILE CEREMONIES -->
+  <div class="module-page">
+  <div class="q-module-header">
+    <h3>&#128197; Module 3 — Agile Ceremonies (Q7–Q8)</h3>
+    <div class="objective">Objective: Describe how AI enhances Agile ceremonies by surfacing data-driven insights that improve team decision-making.</div>
+  </div>
+
+  <div class="question">
+    <div class="q-num m3">Q7 · MODULE 3 — AGILE CEREMONIES</div>
+    <div class="q-text">During Sprint Planning for the Starman project, the team debates story point estimates for the orbital calculation module. According to the lecture, how does AI improve Sprint Planning?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> AI suggests estimates based on data from similar past stories, reducing debate time</li>
+      <li><span class="letter">B)</span> AI eliminates Sprint Planning because it assigns all work automatically</li>
+      <li><span class="letter">C)</span> AI replaces the entire team's input by deciding sprint goals unilaterally</li>
+      <li><span class="letter">D)</span> AI only records the meeting but provides no analytical input</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <div class="q-num m3">Q8 · MODULE 3 — AGILE CEREMONIES</div>
+    <div class="q-text">At the end of each sprint, the Starman team holds a Retrospective. The same improvement themes keep coming up across sprints. What is the MOST impactful AI application for Retrospectives?</div>
+    <ul class="options">
+      <li><span class="letter">A)</span> AI cancels retrospectives when it determines the team is performing well</li>
+      <li><span class="letter">B)</span> AI scores each team member's individual performance during the sprint</li>
+      <li><span class="letter">C)</span> AI generates fake positive feedback to improve team morale</li>
+      <li><span class="letter">D)</span> AI detects recurring themes and patterns across multiple retrospectives that humans miss</li>
+    </ul>
+  </div>
+  </div>
+
+  <!-- OPEN REFLECTION + RETROSPECTIVE -->
+  <div class="module-page">
+  <div class="q-module-header">
+    <h3>&#128161; Open Reflection + Retrospective (Q9–Q10)</h3>
+    <div class="objective">These questions are graded for thoughtfulness, specificity, and completion.</div>
+  </div>
+
+  <div class="question">
+    <div class="q-num open">Q9 · OPEN REFLECTION</div>
+    <div class="q-text">Regardless of your area of study or career path, what are you personally doing — or planning to do — to prepare for the "Age of AI"? Consider new skills you are developing, tools you are learning, changes in your mindset, or habits you are building.</div>
+    <div class="essay-space">Write your reflection here...</div>
+  </div>
+
+  <div class="question">
+    <div class="q-num retro">Q10 · TEAM RETROSPECTIVE</div>
+    <div class="q-text">Reflect on the lectures about Project Management, SDLC, Agile, and AI (April 8 &amp; 13) and the Mission Starman activity using the START / STOP / CONTINUE framework. Write one item for each:</div>
+    <div class="retro-grid" style="margin-bottom: 0;">
+      <div class="retro-col start">
+        <h4>START</h4>
+        <p>What should we <strong>start</strong> doing?</p>
+      </div>
+      <div class="retro-col stop">
+        <h4>STOP</h4>
+        <p>What should we <strong>stop</strong> doing?</p>
+      </div>
+      <div class="retro-col continue">
+        <h4>CONTINUE</h4>
+        <p>What should we <strong>continue</strong> doing?</p>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- AI Policy -->
+  <div class="ai-policy">
+    <h3>&#129302; AI Usage Policy</h3>
+    <p>AI usage is <span class="emphasis">encouraged</span>! Use AI tools (Claude, ChatGPT, etc.) to help you understand concepts and discuss questions with your team. <strong>However:</strong> avoid simply copying and pasting questions into AI. Focus on <span class="emphasis">interpretation</span>, not copy-paste. Think critically about which AI application would be MOST valuable in each context.</p>
+  </div>
+
+</div>
+</body>
+</html>
